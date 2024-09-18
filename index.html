@@ -71,39 +71,20 @@
     <div id="results"></div>
 
     <script>
-        // Função para buscar os resultados
-        async function fetchResults() {
-            const response = await fetch('search_results.json'); // Lê o arquivo JSON
-            const data = await response.json(); // Converte em formato utilizável
+        const API_KEY = 'SUA_API_KEY_AQUI'; // Substitua pela sua chave da Google Custom Search API
+        const CX = 'SEU_CX_AQUI'; // Substitua pelo seu Custom Search Engine ID
+
+        // Função para buscar resultados na Google Custom Search API
+        async function fetchResults(query) {
+            const url = `https://www.googleapis.com/customsearch/v1?q=${query}&key=${API_KEY}&cx=${CX}`;
+            const response = await fetch(url);
+            const data = await response.json();
             return data;
         }
 
         // Função para exibir os resultados na tela
         function showResults() {
-            fetchResults().then(results => {
-                const resultsDiv = document.getElementById('results');
-                resultsDiv.innerHTML = ''; // Limpa os resultados anteriores
-                resultsDiv.style.display = 'block'; // Exibe o container de resultados
-
-                results.forEach(result => {
-                    const resultDiv = document.createElement('div');
-                    resultDiv.classList.add('result');
-
-                    const title = document.createElement('h3');
-                    title.innerHTML = `<a href="${result.link}" target="_blank">${result.title}</a>`;
-                    
-                    const description = document.createElement('p');
-                    description.textContent = result.description;
-
-                    resultDiv.appendChild(title);
-                    resultDiv.appendChild(description);
-                    resultsDiv.appendChild(resultDiv);
-                });
-            }).catch(error => {
-                console.error("Erro ao carregar os resultados: ", error);
-            });
-        }
-    </script>
-
-</body>
-</html>
+            const queries = [
+                'editais para projetos sociais em aberto',
+                'editais para projetos de inovação em aberto',
+                'editais pr
