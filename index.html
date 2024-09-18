@@ -77,27 +77,18 @@
             resultsDiv.innerHTML = ''; // Limpa resultados anteriores
             resultsDiv.style.display = 'block'; // Exibe o container de resultados
 
-            fetch('search_results.json')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(item => {
-                        const resultDiv = document.createElement('div');
-                        resultDiv.classList.add('result');
-
-                        const title = document.createElement('h3');
-                        title.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
-
-                        const description = document.createElement('p');
-                        description.textContent = item.description;
-
-                        resultDiv.appendChild(title);
-                        resultDiv.appendChild(description);
-                        resultsDiv.appendChild(resultDiv);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar o arquivo JSON:', error);
-                });
+           fetch('caminho/para/o/arquivo.json')
+  .then(response => response.json())
+  .then(data => {
+    if (Array.isArray(data)) {
+      data.forEach(item => {
+        // Seu código aqui
+      });
+    } else {
+      console.error('O dado carregado não é um array.');
+    }
+  })
+  .catch(error => console.error('Erro ao carregar o arquivo JSON:', error));
         }
     </script>
 
