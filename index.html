@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Pesquisa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #results {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result {
+            background-color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result h3 {
+            margin: 0;
+        }
+
+        .result a {
+            text-decoration: none;
+            color: #1a0dab;
+        }
+
+        .result a:hover {
+            text-decoration: underline;
+        }
+
+        .result p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Atualize-se com as Oportunidades</h1>
+    <button onclick="showResults()">Atualize-se</button>
+
+    <div id="results"></div>
+
+    <script>
+        // Função para buscar os resultados
+        async function fetchResults() {
+            const response = await fetch('search_results.json'); // Lê o arquivo JSON
+            const data = await response.json(); // Converte em formato utilizável
+            return data;
+        }
+
+        // Função para exibir os resultados na tela
+        function showResults() {
+            fetchResults().then(results => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = ''; // Limpa os resultados anteriores
+                resultsDiv.style.display = 'block'; // Exibe o container de resultados
+
+                results.forEach(result => {
+                    const resultDiv = document.createElement('div');
+                    resultDiv.classList.add('result');
+
+                    const title = document.createElement('h3');
+                    title.innerHTML = `<a href="${result.link}" target="_blank">${result.title}</a>`;
+                    
+                    const description = document.createElement('p');
+                    description.textContent = result.description;
+
+                    resultDiv.appendChild(title);
+                    resultDiv.appendChild(description);
+                    resultsDiv.appendChild(resultDiv);
+                });
+            }).catch(error => {
+                console.error("Erro ao carregar os resultados: ", error);
+            });
+        }
+    </script>
+
+</body>
+</html>
