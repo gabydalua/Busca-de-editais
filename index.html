@@ -71,20 +71,35 @@
     <div id="results"></div>
 
     <script>
-        const API_KEY = 'SUA_API_KEY_AQUI'; // Substitua pela sua chave da Google Custom Search API
-        const CX = 'SEU_CX_AQUI'; // Substitua pelo seu Custom Search Engine ID
-
-        // Função para buscar resultados na Google Custom Search API
-        async function fetchResults(query) {
-            const url = `https://www.googleapis.com/customsearch/v1?q=${query}&key=${API_KEY}&cx=${CX}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            return data;
-        }
-
-        // Função para exibir os resultados na tela
+        // Função para carregar o arquivo JSON de resultados e exibi-los
         function showResults() {
-            const queries = [
-                'editais para projetos sociais em aberto',
-                'editais para projetos de inovação em aberto',
-                'editais pr
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Limpa resultados anteriores
+            resultsDiv.style.display = 'block'; // Exibe o container de resultados
+
+            fetch('search_results.json')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(item => {
+                        const resultDiv = document.createElement('div');
+                        resultDiv.classList.add('result');
+
+                        const title = document.createElement('h3');
+                        title.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+
+                        const description = document.createElement('p');
+                        description.textContent = item.description;
+
+                        resultDiv.appendChild(title);
+                        resultDiv.appendChild(description);
+                        resultsDiv.appendChild(resultDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar o arquivo JSON:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>
